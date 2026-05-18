@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sheldon Brown — Technical Support Engineer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0a0c0f;
+      --bg2: #111417;
+      --bg3: #181c21;
+      --border: #1e2530;
+      --accent: #3b82f6;
+      --accent2: #60a5fa;
+      --text: #e2e8f0;
+      --text2: #94a3b8;
+      --text3: #64748b;
+      --green: #34d399;
+      --mono: 'IBM Plex Mono', monospace;
+      --sans: 'Syne', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* Grid background */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(var(--border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 48px 48px;
+      opacity: 0.35;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .wrap { max-width: 860px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: rgba(10, 12, 15, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    nav .wrap {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 56px;
+    }
+    .nav-logo {
+      font-family: var(--mono);
+      font-size: 13px;
+      color: var(--accent2);
+      letter-spacing: 0.05em;
+    }
+    .nav-links { display: flex; gap: 28px; }
+    .nav-links a {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--text3);
+      text-decoration: none;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--accent2); }
+
+    /* HERO */
+    .hero {
+      padding: 140px 0 100px;
+      position: relative;
+    }
+    .hero-label {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--accent);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards 0.1s;
+    }
+    .hero h1 {
+      font-size: clamp(42px, 7vw, 72px);
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      margin-bottom: 24px;
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards 0.2s;
+    }
+    .hero h1 span { color: var(--accent2); }
+    .hero-sub {
+      font-size: 18px;
+      color: var(--text2);
+      max-width: 560px;
+      line-height: 1.7;
+      margin-bottom: 40px;
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards 0.35s;
+    }
+    .hero-links {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards 0.5s;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 11px 22px;
+      border-radius: 6px;
+      font-family: var(--mono);
+      font-size: 13px;
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.2s;
+      letter-spacing: 0.03em;
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+      border: 1px solid var(--accent);
+    }
+    .btn-primary:hover { background: var(--accent2); border-color: var(--accent2); transform: translateY(-1px); }
+    .btn-outline {
+      background: transparent;
+      color: var(--text2);
+      border: 1px solid var(--border);
+    }
+    .btn-outline:hover { border-color: var(--accent); color: var(--accent2); transform: translateY(-1px); }
+
+    /* STATS BAR */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      margin: 80px 0;
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards 0.6s;
+    }
+    .stat {
+      background: var(--bg2);
+      padding: 28px 32px;
+      text-align: center;
+    }
+    .stat-num {
+      font-size: 36px;
+      font-weight: 800;
+      color: var(--accent2);
+      letter-spacing: -0.02em;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .stat-label {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text3);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    /* SECTIONS */
+    section { padding: 80px 0; }
+    .section-label {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--accent);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .section-title {
+      font-size: 32px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 40px;
+    }
+
+    /* ABOUT */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: start;
+    }
+    .about-text p {
+      color: var(--text2);
+      line-height: 1.8;
+      margin-bottom: 16px;
+      font-size: 15px;
+    }
+    .about-text p:last-child { margin-bottom: 0; }
+    .skills-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    .skill-tag {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 8px 12px;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text2);
+      letter-spacing: 0.03em;
+    }
+    .skill-tag.highlight {
+      border-color: rgba(59, 130, 246, 0.3);
+      color: var(--accent2);
+      background: rgba(59, 130, 246, 0.06);
+    }
+
+    /* PROJECTS */
+    .projects-grid {
+      display: grid;
+      gap: 16px;
+    }
+    .project-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 28px 32px;
+      text-decoration: none;
+      display: block;
+      transition: all 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+    .project-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 3px;
+      height: 100%;
+      background: var(--accent);
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+    .project-card:hover {
+      border-color: rgba(59, 130, 246, 0.3);
+      transform: translateX(4px);
+    }
+    .project-card:hover::before { opacity: 1; }
+    .project-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+    .project-name {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.01em;
+    }
+    .project-arrow {
+      color: var(--text3);
+      font-size: 18px;
+      transition: color 0.2s, transform 0.2s;
+    }
+    .project-card:hover .project-arrow {
+      color: var(--accent2);
+      transform: translate(2px, -2px);
+    }
+    .project-desc {
+      color: var(--text2);
+      font-size: 14px;
+      line-height: 1.7;
+      margin-bottom: 16px;
+    }
+    .project-tags {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .tag {
+      font-family: var(--mono);
+      font-size: 10px;
+      padding: 3px 9px;
+      border-radius: 4px;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      color: var(--text3);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+    .tag.blue { color: var(--accent2); border-color: rgba(59,130,246,0.25); background: rgba(59,130,246,0.07); }
+    .tag.green { color: var(--green); border-color: rgba(52,211,153,0.25); background: rgba(52,211,153,0.07); }
+
+    /* EXPERIENCE */
+    .exp-list { display: grid; gap: 2px; }
+    .exp-item {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 24px 28px;
+    }
+    .exp-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 6px;
+    }
+    .exp-title {
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+    .exp-date {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text3);
+      letter-spacing: 0.05em;
+      white-space: nowrap;
+      margin-left: 16px;
+    }
+    .exp-company {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--accent);
+      margin-bottom: 12px;
+      letter-spacing: 0.05em;
+    }
+    .exp-bullets {
+      list-style: none;
+      display: grid;
+      gap: 6px;
+    }
+    .exp-bullets li {
+      font-size: 14px;
+      color: var(--text2);
+      line-height: 1.65;
+      padding-left: 16px;
+      position: relative;
+    }
+    .exp-bullets li::before {
+      content: '—';
+      position: absolute;
+      left: 0;
+      color: var(--text3);
+      font-family: var(--mono);
+    }
+
+    /* CONTACT */
+    .contact-box {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 48px;
+      text-align: center;
+    }
+    .contact-box h2 {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 12px;
+    }
+    .contact-box p {
+      color: var(--text2);
+      font-size: 15px;
+      margin-bottom: 32px;
+      max-width: 420px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .contact-links {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 28px 0;
+      text-align: center;
+    }
+    footer p {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text3);
+      letter-spacing: 0.05em;
+    }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.55s ease, transform 0.55s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 640px) {
+      .about-grid { grid-template-columns: 1fr; }
+      .stats { grid-template-columns: 1fr; }
+      .hero { padding: 110px 0 60px; }
+      .contact-box { padding: 32px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="wrap">
+      <span class="nav-logo">sheldon@brown:~$</span>
+      <div class="nav-links">
+        <a href="#about">About</a>
+        <a href="#projects">Projects</a>
+        <a href="#experience">Experience</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <div class="wrap">
+
+      <!-- HERO -->
+      <section class="hero">
+        <p class="hero-label">// Technical Support Engineer</p>
+        <h1>Hi, I'm<br><span>Sheldon Brown.</span></h1>
+        <p class="hero-sub">I spend my days figuring out what breaks, why it breaks, and how to explain that clearly to customers and engineers alike. Five years in SaaS support. Most of my work lives at the integration layer.</p>
+        <div class="hero-links">
+          <a href="https://github.com/SDBrownII" class="btn btn-primary" target="_blank">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+            GitHub
+          </a>
+          <a href="https://www.linkedin.com/in/sheldon-brown-57541520/" class="btn btn-outline" target="_blank">LinkedIn</a>
+          <a href="mailto:paladin31@gmail.com" class="btn btn-outline">Email Me</a>
+        </div>
+
+        <!-- STATS -->
+        <div class="stats">
+          <div class="stat">
+            <div class="stat-num">35–45</div>
+            <div class="stat-label">Cases / Week</div>
+          </div>
+          <div class="stat">
+            <div class="stat-num">90%</div>
+            <div class="stat-label">cSAT Score</div>
+          </div>
+          <div class="stat">
+            <div class="stat-num">5+</div>
+            <div class="stat-label">Years in SaaS</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ABOUT -->
+      <section id="about">
+        <div class="reveal">
+          <p class="section-label">// 01 — About</p>
+          <h2 class="section-title">What I do</h2>
+        </div>
+        <div class="about-grid reveal">
+          <div class="about-text">
+            <p>I'm a Technical Support Engineer with five years at a SaaS document management company, where I specialize in integration troubleshooting, SSO/SAML issues, and document automation apps.</p>
+            <p>Most of my time is spent at the integration layer — tracing API calls with Fiddler and Wireshark, reading HAR captures, and working backward from a broken 401 or 500 to find the actual root cause before escalating to Engineering.</p>
+            <p>I've also been building AI-assisted support workflows since before it became a talking point — including a Claude-based toolset for our customer service team, with the director's backing, to help people work through tickets faster.</p>
+          </div>
+          <div>
+            <div class="skills-grid">
+              <div class="skill-tag highlight">REST APIs</div>
+              <div class="skill-tag highlight">Fiddler / Wireshark</div>
+              <div class="skill-tag highlight">Microsoft Graph API</div>
+              <div class="skill-tag highlight">SAML / SSO</div>
+              <div class="skill-tag">Salesforce Service Cloud</div>
+              <div class="skill-tag">Zendesk</div>
+              <div class="skill-tag">Jira</div>
+              <div class="skill-tag">Splunk</div>
+              <div class="skill-tag">Exchange Online</div>
+              <div class="skill-tag">Azure AD / Entra</div>
+              <div class="skill-tag highlight">Claude AI</div>
+              <div class="skill-tag">Python</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PROJECTS -->
+      <section id="projects">
+        <div class="reveal">
+          <p class="section-label">// 02 — Projects</p>
+          <h2 class="section-title">Things I've built</h2>
+        </div>
+        <div class="projects-grid">
+
+          <a class="project-card reveal" href="https://github.com/SDBrownII/support-ai-workflows" target="_blank">
+            <div class="project-top">
+              <div class="project-name">Support AI Workflows</div>
+              <div class="project-arrow">↗</div>
+            </div>
+            <p class="project-desc">Structured Claude AI system prompts that turn a general-purpose assistant into a specialized SaaS support diagnostic tool. Built from real workflows — separates facts from assumptions, ranks likely causes, generates escalation packages, and rates its own confidence level.</p>
+            <div class="project-tags">
+              <span class="tag green">Claude AI</span>
+              <span class="tag blue">Prompt Engineering</span>
+              <span class="tag">Support Tooling</span>
+            </div>
+          </a>
+
+          <a class="project-card reveal" href="https://github.com/SDBrownII/support-ticket-helper" target="_blank">
+            <div class="project-top">
+              <div class="project-name">Support Ticket Helper</div>
+              <div class="project-arrow">↗</div>
+            </div>
+            <p class="project-desc">A CLI tool that uses the Claude API to help support engineers draft responses and diagnose issues faster. Three modes: draft a response, diagnose root causes, or both. Built from workflows developed handling 35–45 tickets per week.</p>
+            <div class="project-tags">
+              <span class="tag blue">Python</span>
+              <span class="tag green">Claude API</span>
+              <span class="tag">CLI</span>
+            </div>
+          </a>
+
+          <a class="project-card reveal" href="https://github.com/SDBrownII/financial-api-demo" target="_blank">
+            <div class="project-top">
+              <div class="project-name">Exchange Rate Fetcher</div>
+              <div class="project-arrow">↗</div>
+            </div>
+            <p class="project-desc">A Python script that calls a public currency exchange rate API, parses the JSON response, and displays results in a clean, readable format. Demonstrates REST API calls, error handling, and command-line argument parsing.</p>
+            <div class="project-tags">
+              <span class="tag blue">Python</span>
+              <span class="tag green">REST API</span>
+              <span class="tag">JSON</span>
+            </div>
+          </a>
+
+        </div>
+      </section>
+
+      <!-- EXPERIENCE -->
+      <section id="experience">
+        <div class="reveal">
+          <p class="section-label">// 03 — Experience</p>
+          <h2 class="section-title">Where I've worked</h2>
+        </div>
+        <div class="exp-list">
+
+          <div class="exp-item reveal">
+            <div class="exp-header">
+              <div class="exp-title">Technical Support Engineer</div>
+              <div class="exp-date">2021 – Present</div>
+            </div>
+            <div class="exp-company">NetDocuments</div>
+            <ul class="exp-bullets">
+              <li>Close 35–45 cases per week with a 90% cSAT score and the lowest active backlog on the team</li>
+              <li>Trace API calls using Fiddler, Wireshark, and HAR captures to find root causes before escalating</li>
+              <li>PatternBuilder specialist — investigate document automation defects and work with Engineering to track and resolve confirmed bugs</li>
+              <li>Built AI-assisted workflows, trained the team, and now building a Claude-based toolset for the broader customer service team</li>
+              <li>Handle SSO/SAML cases including Entra configuration issues, assertion signing errors, and tenant migrations</li>
+            </ul>
+          </div>
+
+          <div class="exp-item reveal">
+            <div class="exp-header">
+              <div class="exp-title">Technical Support Representative</div>
+              <div class="exp-date">Feb 2020 – Aug 2020</div>
+            </div>
+            <div class="exp-company">Solutionreach (Contract)</div>
+            <ul class="exp-bullets">
+              <li>Supported a SaaS patient communication platform that integrates with medical practice management systems via API</li>
+              <li>Diagnosed integration failures between Solutionreach and practice management software</li>
+            </ul>
+          </div>
+
+          <div class="exp-item reveal">
+            <div class="exp-header">
+              <div class="exp-title">Contact Representative</div>
+              <div class="exp-date">2018 – 2019</div>
+            </div>
+            <div class="exp-company">U.S. Department of Veterans Affairs</div>
+            <ul class="exp-bullets">
+              <li>Managed benefits claims caseload, coordinating across federal systems to move cases to resolution</li>
+              <li>Learned fast what it means to stay clear and steady when the work actually matters</li>
+            </ul>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- CONTACT -->
+      <section id="contact">
+        <div class="contact-box reveal">
+          <h2>Let's talk</h2>
+          <p>I'm open to new opportunities. If you're looking for someone who knows their way around a broken API call, feel free to reach out.</p>
+          <div class="contact-links">
+            <a href="mailto:paladin31@gmail.com" class="btn btn-primary">paladin31@gmail.com</a>
+            <a href="https://www.linkedin.com/in/sheldon-brown-57541520/" class="btn btn-outline" target="_blank">LinkedIn</a>
+            <a href="https://github.com/SDBrownII" class="btn btn-outline" target="_blank">GitHub</a>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <p>© 2026 Sheldon Brown &nbsp;·&nbsp; Eagle Mountain, UT &nbsp;·&nbsp; CompTIA Project+</p>
+    </div>
+  </footer>
+
+  <script>
+    // Scroll reveal
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>
